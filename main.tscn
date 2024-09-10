@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://cx0nblwwl187c"]
+
+[ext_resource type="PackedScene" uid="uid://bopij72t0cy55" path="res://car.tscn" id="1_naa4k"]
+[ext_resource type="Texture2D" uid="uid://b3srqkbk10eus" path="res://icon.svg" id="2_yohwb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eonmy"]
+size = Vector3(200, 0, 200)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ipthm"]
+albedo_texture = ExtResource("2_yohwb")
+metallic = 1.0
+metallic_texture = ExtResource("2_yohwb")
+uv1_scale = Vector3(50, 50, 50)
+
+[node name="Level" type="Node3D"]
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+shape = SubResource("BoxShape3D_eonmy")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="StaticBody3D2"]
+transform = Transform3D(1.00281, 0, 0, 0, 1.00281, 0, 0, 0, 1.00281, 0, 0, 0)
+size = Vector3(200, 0, 200)
+material = SubResource("StandardMaterial3D_ipthm")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("1_naa4k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.38311, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
+transform = Transform3D(-1, 0, -8.74228e-08, -3.94156e-08, 0.892594, 0.450862, 7.8033e-08, 0.450862, -0.892594, 0, 1.87753, -4.06297)
+fov = 83.2
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.71229, -0.261633, -0.6513, 0.674805, -3.22588e-08, 0.737996, -0.193084, -0.965167, 0.176551, -20.2364, 12.8236, 13.1256)
+shadow_enabled = true
