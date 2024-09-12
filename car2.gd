@@ -41,10 +41,8 @@ func TurnTires(delta: float) -> void:
 	
 	for wheel: CSGCylinder3D in wheels:
 		var toRotate 
-		if Speed >= 0: toRotate = TireAngleRad - wheel.rotation.y
+		if Speed > 0: toRotate = TireAngleRad - wheel.rotation.y
 		else: toRotate = -1 *TireAngleRad - wheel.rotation.y
-		
-		if toRotate == 0: continue
 		
 		wheel.rotate(basis.y, toRotate)
 		
@@ -141,7 +139,6 @@ func Jump() -> void:
 	
 func _physics_process(delta: float) -> void:
 	UseGravity(delta)
-	if not is_on_floor(): return
 	
 	if Input.is_action_pressed("Accelerate"): 
 		if Speed >= 0: Accelerate(delta)
@@ -164,9 +161,6 @@ func _physics_process(delta: float) -> void:
 		
 	else:
 		TurnNormal(delta)
-		
-	if Input.is_action_pressed("Jump"):
-		Jump()
 	
 	# set velocity
 	velocity.x = sin(CarAngleRad) * Speed
@@ -178,7 +172,7 @@ func _physics_process(delta: float) -> void:
 	if Speed != 0:
 		RotateTires(delta)
 		RotateCar(delta)
-	
+		
 	TurnTires(delta)
 
 	move_and_slide()
