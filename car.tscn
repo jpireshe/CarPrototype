@@ -13,7 +13,7 @@ albedo_texture = ExtResource("2_kwljf")
 albedo_color = Color(0.488142, 0.717815, 1, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ive0b"]
-albedo_color = Color(0.901771, 5.99228e-06, 8.66354e-07, 1)
+albedo_color = Color(1.92523e-07, 0.231552, 0.0885748, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_olg26"]
 albedo_texture = ExtResource("2_kwljf")
@@ -39,13 +39,17 @@ albedo_texture = ExtResource("2_kwljf")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5i4qh"]
 albedo_texture = ExtResource("2_kwljf")
 
-[node name="CharacterBody3D" type="CharacterBody3D" node_paths=PackedStringArray("TireLeftFront", "TireRightFront", "TireLeftBack", "TireRightBack")]
+[node name="CharacterBody3D" type="CharacterBody3D" node_paths=PackedStringArray("TireLeftFront", "TireRightFront", "TireLeftBack", "TireRightBack", "LightFrontRight", "LightFrontLeft", "LightBackRight", "LightBackLeft")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000542164, 0.00239837, 0.000979662)
 script = ExtResource("1_cx7ss")
 TireLeftFront = NodePath("CarShape/Wheels/FrontLeft")
 TireRightFront = NodePath("CarShape/Wheels/FrontRight")
 TireLeftBack = NodePath("CarShape/Wheels/BackLeft")
 TireRightBack = NodePath("CarShape/Wheels/BackRight")
+LightFrontRight = NodePath("CarShape/Chassis/LightFrontRight")
+LightFrontLeft = NodePath("CarShape/Chassis/LightFrontLeft")
+LightBackRight = NodePath("CarShape/Chassis/LightBackRight")
+LightBackLeft = NodePath("CarShape/Chassis/LightBackLeft")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.248884, 0)
@@ -69,6 +73,36 @@ material = SubResource("StandardMaterial3D_ive0b")
 transform = Transform3D(1.19245, 0, 0, 0, 0.222324, 0.0643572, 0, -0.160551, 0.0891187, 0, 0.311571, -0.981517)
 material_override = SubResource("StandardMaterial3D_olg26")
 material = SubResource("StandardMaterial3D_b8twh")
+
+[node name="LightFrontRight" type="SpotLight3D" parent="CarShape/Chassis"]
+transform = Transform3D(-1, -1.51808e-08, 8.60946e-08, 0, 0.984808, 0.173648, -8.74228e-08, 0.173648, -0.984808, -0.292793, 0, 1.00487)
+visible = false
+light_energy = 80.0
+shadow_enabled = true
+distance_fade_enabled = true
+spot_range = 100.0
+spot_angle = 24.0
+
+[node name="LightFrontLeft" type="SpotLight3D" parent="CarShape/Chassis"]
+transform = Transform3D(-1, 1.51808e-08, -8.60946e-08, 0, 0.984808, 0.173648, 8.74228e-08, 0.173648, -0.984808, 0.27067, 0, 1.00487)
+visible = false
+light_energy = 80.0
+shadow_enabled = true
+distance_fade_enabled = true
+spot_range = 100.0
+spot_angle = 24.0
+
+[node name="LightBackLeft" type="OmniLight3D" parent="CarShape/Chassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.257416, 0, -1.00766)
+visible = false
+light_color = Color(1, 0, 0, 1)
+light_energy = 2.5
+
+[node name="LightBackRight" type="OmniLight3D" parent="CarShape/Chassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.262631, 0, -1.00766)
+visible = false
+light_color = Color(1, 0, 0, 1)
+light_energy = 2.5
 
 [node name="Wheels" type="CSGCombiner3D" parent="CarShape"]
 

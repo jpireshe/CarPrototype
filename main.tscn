@@ -35,3 +35,13 @@ fov = 83.2
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.71229, -0.261633, -0.6513, 0.674805, -3.22588e-08, 0.737996, -0.193084, -0.965167, 0.176551, -20.2364, 12.8236, 13.1256)
 shadow_enabled = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_left = 9.0
+offset_top = 6.0
+offset_right = 229.0
+offset_bottom = 52.0
+text = "Press Space to turn lights on
+Press WASD to move"
+fit_content = true
+autowrap_mode = 0
