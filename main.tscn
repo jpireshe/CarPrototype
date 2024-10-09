@@ -1,47 +1,201 @@
-[gd_scene load_steps=5 format=3 uid="uid://cx0nblwwl187c"]
+[gd_scene load_steps=10 format=3 uid="uid://cx0nblwwl187c"]
 
+[ext_resource type="Script" path="res://main.gd" id="1_4420d"]
 [ext_resource type="PackedScene" uid="uid://bopij72t0cy55" path="res://car.tscn" id="1_naa4k"]
-[ext_resource type="Texture2D" uid="uid://b3srqkbk10eus" path="res://icon.svg" id="2_yohwb"]
+[ext_resource type="PackedScene" uid="uid://dhb4cesxtotcr" path="res://Checkpoint.tscn" id="3_8cbso"]
+[ext_resource type="Texture2D" uid="uid://cxxcnt0whn0ix" path="res://gimp/road.png" id="3_m8j21"]
+[ext_resource type="PackedScene" uid="uid://cla3wou6owcci" path="res://aicar.tscn" id="5_7jaa7"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_eonmy"]
-size = Vector3(200, 0, 200)
+[sub_resource type="BoxShape3D" id="BoxShape3D_syfs4"]
+size = Vector3(10, 0, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_23yor"]
+albedo_color = Color(0.641934, 0.641934, 0.641934, 1)
+albedo_texture = ExtResource("3_m8j21")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ipthm"]
-albedo_texture = ExtResource("2_yohwb")
-metallic = 1.0
-metallic_texture = ExtResource("2_yohwb")
-uv1_scale = Vector3(50, 50, 50)
+albedo_texture = ExtResource("3_m8j21")
+metallic_texture = ExtResource("3_m8j21")
+anisotropy_enabled = true
+anisotropy = 1.0
 
-[node name="Level" type="Node3D"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_kvapu"]
+size = Vector3(1, 0.001, 100)
 
-[node name="StaticBody3D2" type="StaticBody3D" parent="."]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+[node name="Level" type="Node3D" node_paths=PackedStringArray("aiCar")]
+script = ExtResource("1_4420d")
+aiCar = NodePath("AICar")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
-shape = SubResource("BoxShape3D_eonmy")
-
-[node name="CSGBox3D" type="CSGBox3D" parent="StaticBody3D2"]
-transform = Transform3D(1.00281, 0, 0, 0, 1.00281, 0, 0, 0, 1.00281, 0, 0, 0)
-size = Vector3(200, 0, 200)
-material = SubResource("StandardMaterial3D_ipthm")
-
-[node name="CharacterBody3D" parent="." instance=ExtResource("1_naa4k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.38311, 0)
-
-[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
-transform = Transform3D(-1, 0, -8.74228e-08, -3.94156e-08, 0.892594, 0.450862, 7.8033e-08, 0.450862, -0.892594, 0, 1.87753, -4.06297)
-fov = 83.2
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.71229, -0.261633, -0.6513, 0.674805, -3.22588e-08, 0.737996, -0.193084, -0.965167, 0.176551, -20.2364, 12.8236, 13.1256)
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.71229, -0.261633, -0.6513, 0.674805, 1.58793e-07, 0.737996, -0.193084, -0.965168, 0.176551, -20.2364, 12.8236, 13.1256)
+light_energy = 3.747
 shadow_enabled = true
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
 offset_left = 9.0
 offset_top = 6.0
-offset_right = 229.0
-offset_bottom = 52.0
+offset_right = 49.0
+offset_bottom = 46.0
+
+[node name="Controls" type="RichTextLabel" parent="UI"]
+layout_mode = 0
+offset_right = 220.0
+offset_bottom = 46.0
 text = "Press Space to turn lights on
 Press WASD to move"
 fit_content = true
 autowrap_mode = 0
+
+[node name="Lap" type="RichTextLabel" parent="UI"]
+layout_mode = 0
+offset_top = 57.0
+offset_right = 220.0
+offset_bottom = 103.0
+text = "LAP: 0"
+fit_content = true
+autowrap_mode = 0
+
+[node name="AILap" type="RichTextLabel" parent="UI"]
+layout_mode = 0
+offset_top = 84.0
+offset_right = 220.0
+offset_bottom = 130.0
+text = "AI LAP: 0"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Car" parent="." instance=ExtResource("1_naa4k")]
+transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, -13.4955, 0.560904, 42.5468)
+
+[node name="Camera3D" type="Camera3D" parent="Car"]
+transform = Transform3D(-1, -1.64818e-14, -8.74227e-08, -1.77716e-08, 0.97912, 0.203283, 8.55974e-08, 0.203283, -0.97912, 0, 1.18057, -3.75815)
+
+[node name="DriveArena" type="Node3D" parent="."]
+
+[node name="Floor" type="StaticBody3D" parent="DriveArena"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DriveArena/Floor"]
+shape = SubResource("BoxShape3D_syfs4")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="DriveArena/Floor"]
+transform = Transform3D(1.003, 0, 0, 0, 1, 0, 0, 0, 1.003, 0, 0, 0)
+size = Vector3(10, 0, 10)
+material = SubResource("StandardMaterial3D_23yor")
+
+[node name="Wall" type="StaticBody3D" parent="DriveArena"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -50.15, 0, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="DriveArena/Wall"]
+transform = Transform3D(1.00281, 0, 0, 0, 1.00281, 0, 0, 0, 1.00281, 0, 0, 0)
+size = Vector3(1, 0, 100)
+material = SubResource("StandardMaterial3D_ipthm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DriveArena/Wall"]
+shape = SubResource("BoxShape3D_kvapu")
+
+[node name="Wall2" type="StaticBody3D" parent="DriveArena"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 50.15, 0, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="DriveArena/Wall2"]
+transform = Transform3D(1.00281, 0, 0, 0, 1.00281, 0, 0, 0, 1.00281, 0, 0, 0)
+size = Vector3(1, 0, 100)
+material = SubResource("StandardMaterial3D_ipthm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DriveArena/Wall2"]
+shape = SubResource("BoxShape3D_kvapu")
+
+[node name="Wall3" type="StaticBody3D" parent="DriveArena"]
+transform = Transform3D(1.91069e-15, 4.37114e-08, -1, 1, -4.37114e-08, 0, -4.37114e-08, -1, -4.37114e-08, 2.19213e-06, 0, -50.15)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="DriveArena/Wall3"]
+transform = Transform3D(1.00281, 0, 0, 0, 1.00281, 0, 0, 0, 1.00281, 0, 0, 0)
+size = Vector3(1, 0, 100)
+material = SubResource("StandardMaterial3D_ipthm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DriveArena/Wall3"]
+shape = SubResource("BoxShape3D_kvapu")
+
+[node name="Wall4" type="StaticBody3D" parent="DriveArena"]
+transform = Transform3D(1.91069e-15, 4.37114e-08, -1, 1, -4.37114e-08, 0, -4.37114e-08, -1, -4.37114e-08, -2.19213e-06, 0, 50.15)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="DriveArena/Wall4"]
+transform = Transform3D(1.00281, 0, 0, 0, 1.00281, 0, 0, 0, 1.00281, 0, 0, 0)
+size = Vector3(1, 0, 100)
+material = SubResource("StandardMaterial3D_ipthm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DriveArena/Wall4"]
+shape = SubResource("BoxShape3D_kvapu")
+
+[node name="Checkpoints" type="Node3D" parent="."]
+
+[node name="Checkpoint" parent="Checkpoints" node_paths=PackedStringArray("NextMileMarker") instance=ExtResource("3_8cbso")]
+transform = Transform3D(0.197503, 0, 0.980302, 0, 1, 0, -0.980302, 0, 0.197503, -2.09906, 0, 45.1349)
+NextMileMarker = NodePath("../Checkpoint2")
+IsFirstCheckpoint = true
+
+[node name="Checkpoint2" parent="Checkpoints" node_paths=PackedStringArray("NextMileMarker") instance=ExtResource("3_8cbso")]
+transform = Transform3D(-0.850637, 0, 0.525753, 0, 1, 0, -0.525753, 0, -0.850637, 25.1909, 0, 32.2275)
+NextMileMarker = NodePath("../Checkpoint3")
+
+[node name="Checkpoint3" parent="Checkpoints" node_paths=PackedStringArray("NextMileMarker") instance=ExtResource("3_8cbso")]
+transform = Transform3D(-0.98289, 0, 0.184191, 0, 1, 0, -0.184191, 0, -0.98289, 33.4885, 0, 11.9444)
+NextMileMarker = NodePath("../Checkpoint4")
+
+[node name="Checkpoint4" parent="Checkpoints" node_paths=PackedStringArray("NextMileMarker") instance=ExtResource("3_8cbso")]
+transform = Transform3D(-0.971425, 0, -0.237347, 0, 1, 0, 0.237347, 0, -0.971425, 32.2899, 0, -17.005)
+NextMileMarker = NodePath("../Checkpoint5")
+
+[node name="Checkpoint5" parent="Checkpoints" node_paths=PackedStringArray("NextMileMarker") instance=ExtResource("3_8cbso")]
+transform = Transform3D(-0.630716, 0, -0.776014, 0, 1, 0, 0.776014, 0, -0.630716, 17.6308, 0, -40.0539)
+NextMileMarker = NodePath("../Checkpoint6")
+
+[node name="Checkpoint6" parent="Checkpoints" node_paths=PackedStringArray("NextMileMarker") instance=ExtResource("3_8cbso")]
+transform = Transform3D(0.401117, 0, -0.916027, 0, 1, 0, 0.916027, 0, 0.401117, -7.07763, 0, -43.4652)
+NextMileMarker = NodePath("../Checkpoint7")
+
+[node name="Checkpoint7" parent="Checkpoints" node_paths=PackedStringArray("NextMileMarker") instance=ExtResource("3_8cbso")]
+transform = Transform3D(0.906603, 0, -0.421985, 0, 1, 0, 0.421985, 0, 0.906603, -22.8431, 0, -27.6075)
+NextMileMarker = NodePath("../Checkpoint8")
+
+[node name="Checkpoint8" parent="Checkpoints" node_paths=PackedStringArray("NextMileMarker") instance=ExtResource("3_8cbso")]
+transform = Transform3D(0.999789, 1.9255e-08, 0.020524, -1.93427e-08, 1, 4.07332e-09, -0.020524, -4.46945e-09, 0.999789, -29.389, 0, -1.51613)
+NextMileMarker = NodePath("../Checkpoint9")
+
+[node name="Checkpoint9" parent="Checkpoints" node_paths=PackedStringArray("NextMileMarker") instance=ExtResource("3_8cbso")]
+transform = Transform3D(0.887421, 1.52875e-08, 0.460959, -1.93427e-08, 1, 4.07332e-09, -0.460959, -1.25309e-08, 0.887421, -22.5665, 0, 28.3553)
+NextMileMarker = NodePath("../Checkpoint")
+
+[node name="AICar" parent="." node_paths=PackedStringArray("CurrentCheckpoint") instance=ExtResource("5_7jaa7")]
+transform = Transform3D(0.519116, 0, 0.854704, 0, 1, 0, -0.854704, 0, 0.519116, -10.8729, 1.67239, 38.4998)
+CurrentCheckpoint = NodePath("../Checkpoints/Checkpoint")
+
+[connection signal="body_entered" from="Checkpoints/Checkpoint" to="Checkpoints/Checkpoint" method="_on_body_entered"]
+[connection signal="next_ai_checkpoint" from="Checkpoints/Checkpoint" to="." method="_on_checkpoint_next_ai_checkpoint"]
+[connection signal="next_check_point" from="Checkpoints/Checkpoint" to="." method="_on_checkpoint_next_check_point"]
+[connection signal="body_entered" from="Checkpoints/Checkpoint2" to="Checkpoints/Checkpoint2" method="_on_body_entered"]
+[connection signal="next_ai_checkpoint" from="Checkpoints/Checkpoint2" to="." method="_on_checkpoint_next_ai_checkpoint"]
+[connection signal="next_check_point" from="Checkpoints/Checkpoint2" to="." method="_on_checkpoint_next_check_point"]
+[connection signal="body_entered" from="Checkpoints/Checkpoint3" to="Checkpoints/Checkpoint3" method="_on_body_entered"]
+[connection signal="next_ai_checkpoint" from="Checkpoints/Checkpoint3" to="." method="_on_checkpoint_next_ai_checkpoint"]
+[connection signal="next_check_point" from="Checkpoints/Checkpoint3" to="." method="_on_checkpoint_next_check_point"]
+[connection signal="body_entered" from="Checkpoints/Checkpoint4" to="Checkpoints/Checkpoint4" method="_on_body_entered"]
+[connection signal="next_ai_checkpoint" from="Checkpoints/Checkpoint4" to="." method="_on_checkpoint_next_ai_checkpoint"]
+[connection signal="next_check_point" from="Checkpoints/Checkpoint4" to="." method="_on_checkpoint_next_check_point"]
+[connection signal="body_entered" from="Checkpoints/Checkpoint5" to="Checkpoints/Checkpoint5" method="_on_body_entered"]
+[connection signal="next_ai_checkpoint" from="Checkpoints/Checkpoint5" to="." method="_on_checkpoint_next_ai_checkpoint"]
+[connection signal="next_check_point" from="Checkpoints/Checkpoint5" to="." method="_on_checkpoint_next_check_point"]
+[connection signal="body_entered" from="Checkpoints/Checkpoint6" to="Checkpoints/Checkpoint6" method="_on_body_entered"]
+[connection signal="next_ai_checkpoint" from="Checkpoints/Checkpoint6" to="." method="_on_checkpoint_next_ai_checkpoint"]
+[connection signal="next_check_point" from="Checkpoints/Checkpoint6" to="." method="_on_checkpoint_next_check_point"]
+[connection signal="body_entered" from="Checkpoints/Checkpoint7" to="Checkpoints/Checkpoint7" method="_on_body_entered"]
+[connection signal="next_ai_checkpoint" from="Checkpoints/Checkpoint7" to="." method="_on_checkpoint_next_ai_checkpoint"]
+[connection signal="next_check_point" from="Checkpoints/Checkpoint7" to="." method="_on_checkpoint_next_check_point"]
+[connection signal="body_entered" from="Checkpoints/Checkpoint8" to="Checkpoints/Checkpoint8" method="_on_body_entered"]
+[connection signal="next_ai_checkpoint" from="Checkpoints/Checkpoint8" to="." method="_on_checkpoint_next_ai_checkpoint"]
+[connection signal="next_check_point" from="Checkpoints/Checkpoint8" to="." method="_on_checkpoint_next_check_point"]
+[connection signal="body_entered" from="Checkpoints/Checkpoint9" to="Checkpoints/Checkpoint9" method="_on_body_entered"]
+[connection signal="next_ai_checkpoint" from="Checkpoints/Checkpoint9" to="." method="_on_checkpoint_next_ai_checkpoint"]
+[connection signal="next_check_point" from="Checkpoints/Checkpoint9" to="." method="_on_checkpoint_next_check_point"]

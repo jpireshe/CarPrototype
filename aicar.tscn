@@ -1,0 +1,81 @@
+[gd_scene load_steps=5 format=3 uid="uid://cla3wou6owcci"]
+
+[ext_resource type="Script" path="res://aicar.gd" id="1_tyqya"]
+[ext_resource type="PackedScene" uid="uid://bo3yok1ykaumq" path="res://BlenderMesh/tire.blend" id="2_hto00"]
+[ext_resource type="PackedScene" uid="uid://b4o30v0yrkq3e" path="res://BlenderMesh/car.blend" id="3_sw3da"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bctdj"]
+size = Vector3(1.35527, 0.5, 2.63438)
+
+[node name="CharacterBody3D" type="CharacterBody3D" node_paths=PackedStringArray("TireLeftFront", "TireRightFront", "TireLeftBack", "TireRightBack", "LightFrontRight", "LightFrontLeft", "LightBackRight", "LightBackLeft")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000542164, 0.00239837, 0.000979662)
+script = ExtResource("1_tyqya")
+TireLeftFront = NodePath("CarShape/Wheels/FrontLeft")
+TireRightFront = NodePath("CarShape/Wheels/FrontRight")
+TireLeftBack = NodePath("CarShape/Wheels/BackLeft")
+TireRightBack = NodePath("CarShape/Wheels/BackRight")
+LightFrontRight = NodePath("CarShape/Chassis/LightFrontRight")
+LightFrontLeft = NodePath("CarShape/Chassis/LightFrontLeft")
+LightBackRight = NodePath("CarShape/Chassis/LightBackRight")
+LightBackLeft = NodePath("CarShape/Chassis/LightBackLeft")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.82954e-05, -0.212462, -0.108317)
+shape = SubResource("BoxShape3D_bctdj")
+
+[node name="CarShape" type="CSGCombiner3D" parent="."]
+
+[node name="Wheels" type="CSGCombiner3D" parent="CarShape"]
+
+[node name="FrontRight" parent="CarShape/Wheels" instance=ExtResource("2_hto00")]
+transform = Transform3D(0.236374, 0, 0, 0, 0.236374, 0, 0, 0, 0.236374, -0.602781, -0.283892, 0.796435)
+
+[node name="FrontLeft" parent="CarShape/Wheels" instance=ExtResource("2_hto00")]
+transform = Transform3D(-0.236374, 0, -2.06645e-08, 0, 0.236374, 0, 2.06645e-08, 0, -0.236374, 0.60535, -0.283892, 0.796435)
+
+[node name="BackLeft" parent="CarShape/Wheels" instance=ExtResource("2_hto00")]
+transform = Transform3D(-0.236374, 0, -2.06645e-08, 0, 0.236374, 0, 2.06645e-08, 0, -0.236374, 0.60535, -0.283892, -0.880048)
+
+[node name="BackRight" parent="CarShape/Wheels" instance=ExtResource("2_hto00")]
+transform = Transform3D(0.236374, 0, 0, 0, 0.236374, 0, 0, 0, 0.236374, -0.602781, -0.283892, -0.880949)
+
+[node name="Chassis" type="CSGCombiner3D" parent="CarShape"]
+
+[node name="LightFrontRight" type="SpotLight3D" parent="CarShape/Chassis"]
+transform = Transform3D(-1, -1.51808e-08, 8.60947e-08, 0, 0.984808, 0.173648, -8.74228e-08, 0.173648, -0.984808, -0.292793, -0.14133, 1.17592)
+visible = false
+light_energy = 80.0
+shadow_enabled = true
+distance_fade_enabled = true
+spot_range = 100.0
+spot_angle = 24.0
+
+[node name="LightFrontLeft" type="SpotLight3D" parent="CarShape/Chassis"]
+transform = Transform3D(-1, 1.51808e-08, -8.60947e-08, 0, 0.984808, 0.173648, 8.74228e-08, 0.173648, -0.984808, 0.27067, -0.14133, 1.17592)
+visible = false
+light_energy = 80.0
+shadow_enabled = true
+distance_fade_enabled = true
+spot_range = 100.0
+spot_angle = 24.0
+
+[node name="LightBackLeft" type="OmniLight3D" parent="CarShape/Chassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.507355, -0.0407651, -1.39286)
+visible = false
+light_color = Color(1, 0, 0, 1)
+light_energy = 6.766
+light_indirect_energy = 4.2
+light_volumetric_fog_energy = 3.743
+light_size = 0.057
+
+[node name="LightBackRight" type="OmniLight3D" parent="CarShape/Chassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.51373, -0.0407651, -1.39286)
+visible = false
+light_color = Color(1, 0, 0, 1)
+light_energy = 6.766
+light_indirect_energy = 4.2
+light_volumetric_fog_energy = 3.743
+light_size = 0.057
+
+[node name="car" parent="CarShape/Chassis" instance=ExtResource("3_sw3da")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, -0.046, -0.166)

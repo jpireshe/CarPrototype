@@ -1,43 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://bopij72t0cy55"]
+[gd_scene load_steps=5 format=3 uid="uid://bopij72t0cy55"]
 
 [ext_resource type="Script" path="res://car2.gd" id="1_cx7ss"]
-[ext_resource type="Texture2D" uid="uid://b3srqkbk10eus" path="res://icon.svg" id="2_kwljf"]
+[ext_resource type="PackedScene" uid="uid://bo3yok1ykaumq" path="res://BlenderMesh/tire.blend" id="2_3swoo"]
+[ext_resource type="PackedScene" uid="uid://b4o30v0yrkq3e" path="res://BlenderMesh/car.blend" id="3_c1wgp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bctdj"]
-size = Vector3(1.5, 0.5, 2.1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qshvi"]
-albedo_texture = ExtResource("2_kwljf")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nex1q"]
-albedo_color = Color(0.488142, 0.717815, 1, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ive0b"]
-albedo_color = Color(1.92523e-07, 0.231552, 0.0885748, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_olg26"]
-albedo_texture = ExtResource("2_kwljf")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b8twh"]
-albedo_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1ake6"]
-albedo_texture = ExtResource("2_kwljf")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uai0a"]
-albedo_texture = ExtResource("2_kwljf")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_isl2m"]
-albedo_texture = ExtResource("2_kwljf")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1258l"]
-albedo_texture = ExtResource("2_kwljf")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o2qhe"]
-albedo_texture = ExtResource("2_kwljf")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5i4qh"]
-albedo_texture = ExtResource("2_kwljf")
+size = Vector3(1.35527, 0.5, 2.63438)
 
 [node name="CharacterBody3D" type="CharacterBody3D" node_paths=PackedStringArray("TireLeftFront", "TireRightFront", "TireLeftBack", "TireRightBack", "LightFrontRight", "LightFrontLeft", "LightBackRight", "LightBackLeft")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000542164, 0.00239837, 0.000979662)
@@ -52,30 +20,29 @@ LightBackRight = NodePath("CarShape/Chassis/LightBackRight")
 LightBackLeft = NodePath("CarShape/Chassis/LightBackLeft")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.248884, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.82954e-05, -0.212462, -0.108317)
 shape = SubResource("BoxShape3D_bctdj")
 
 [node name="CarShape" type="CSGCombiner3D" parent="."]
 
+[node name="Wheels" type="CSGCombiner3D" parent="CarShape"]
+
+[node name="FrontRight" parent="CarShape/Wheels" instance=ExtResource("2_3swoo")]
+transform = Transform3D(0.236374, 0, 0, 0, 0.236374, 0, 0, 0, 0.236374, -0.602781, -0.283892, 0.796435)
+
+[node name="FrontLeft" parent="CarShape/Wheels" instance=ExtResource("2_3swoo")]
+transform = Transform3D(-0.236374, 0, -2.06645e-08, 0, 0.236374, 0, 2.06645e-08, 0, -0.236374, 0.60535, -0.283892, 0.796435)
+
+[node name="BackLeft" parent="CarShape/Wheels" instance=ExtResource("2_3swoo")]
+transform = Transform3D(-0.236374, 0, -2.06645e-08, 0, 0.236374, 0, 2.06645e-08, 0, -0.236374, 0.60535, -0.283892, -0.880048)
+
+[node name="BackRight" parent="CarShape/Wheels" instance=ExtResource("2_3swoo")]
+transform = Transform3D(0.236374, 0, 0, 0, 0.236374, 0, 0, 0, 0.236374, -0.602781, -0.283892, -0.880949)
+
 [node name="Chassis" type="CSGCombiner3D" parent="CarShape"]
 
-[node name="Glass" type="CSGCylinder3D" parent="CarShape/Chassis"]
-transform = Transform3D(0.599668, 0, 0, 0, -2.14919e-08, -0.511292, 0, 0.491678, -2.23493e-08, 0, 0.128197, 0.266638)
-material_override = SubResource("StandardMaterial3D_qshvi")
-sides = 20
-material = SubResource("StandardMaterial3D_nex1q")
-
-[node name="Chassis" type="CSGBox3D" parent="CarShape/Chassis"]
-transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 2, 0, 0, 0)
-material = SubResource("StandardMaterial3D_ive0b")
-
-[node name="Spoiler" type="CSGBox3D" parent="CarShape/Chassis"]
-transform = Transform3D(1.19245, 0, 0, 0, 0.222324, 0.0643572, 0, -0.160551, 0.0891187, 0, 0.311571, -0.981517)
-material_override = SubResource("StandardMaterial3D_olg26")
-material = SubResource("StandardMaterial3D_b8twh")
-
 [node name="LightFrontRight" type="SpotLight3D" parent="CarShape/Chassis"]
-transform = Transform3D(-1, -1.51808e-08, 8.60946e-08, 0, 0.984808, 0.173648, -8.74228e-08, 0.173648, -0.984808, -0.292793, 0, 1.00487)
+transform = Transform3D(-1, -1.51808e-08, 8.60947e-08, 0, 0.984808, 0.173648, -8.74228e-08, 0.173648, -0.984808, -0.292793, -0.14133, 1.17592)
 visible = false
 light_energy = 80.0
 shadow_enabled = true
@@ -84,7 +51,7 @@ spot_range = 100.0
 spot_angle = 24.0
 
 [node name="LightFrontLeft" type="SpotLight3D" parent="CarShape/Chassis"]
-transform = Transform3D(-1, 1.51808e-08, -8.60946e-08, 0, 0.984808, 0.173648, 8.74228e-08, 0.173648, -0.984808, 0.27067, 0, 1.00487)
+transform = Transform3D(-1, 1.51808e-08, -8.60947e-08, 0, 0.984808, 0.173648, 8.74228e-08, 0.173648, -0.984808, 0.27067, -0.14133, 1.17592)
 visible = false
 light_energy = 80.0
 shadow_enabled = true
@@ -93,46 +60,22 @@ spot_range = 100.0
 spot_angle = 24.0
 
 [node name="LightBackLeft" type="OmniLight3D" parent="CarShape/Chassis"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.257416, 0, -1.00766)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.507355, -0.0407651, -1.39286)
 visible = false
 light_color = Color(1, 0, 0, 1)
-light_energy = 2.5
+light_energy = 6.766
+light_indirect_energy = 4.2
+light_volumetric_fog_energy = 3.743
+light_size = 0.057
 
 [node name="LightBackRight" type="OmniLight3D" parent="CarShape/Chassis"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.262631, 0, -1.00766)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.51373, -0.0407651, -1.39286)
 visible = false
 light_color = Color(1, 0, 0, 1)
-light_energy = 2.5
+light_energy = 6.766
+light_indirect_energy = 4.2
+light_volumetric_fog_energy = 3.743
+light_size = 0.057
 
-[node name="Wheels" type="CSGCombiner3D" parent="CarShape"]
-
-[node name="FrontRight" type="CSGCylinder3D" parent="CarShape/Wheels"]
-transform = Transform3D(-4.37114e-08, -0.25, 0, 1, -1.09278e-08, 0, 0, 0, 1, -0.625, -0.25, 0.8)
-material_override = SubResource("StandardMaterial3D_1ake6")
-radius = 0.25
-height = 1.0
-sides = 20
-material = SubResource("StandardMaterial3D_uai0a")
-
-[node name="FrontLeft" type="CSGCylinder3D" parent="CarShape/Wheels"]
-transform = Transform3D(-4.37114e-08, -0.25, 0, 1, -1.09278e-08, 0, 0, 0, 1, 0.625, -0.25, 0.8)
-radius = 0.25
-height = 1.0
-sides = 20
-material = SubResource("StandardMaterial3D_isl2m")
-
-[node name="BackLeft" type="CSGCylinder3D" parent="CarShape/Wheels"]
-transform = Transform3D(-4.37114e-08, -0.25, 0, 1, -1.09278e-08, 0, 0, 0, 1, 0.625, -0.25, -0.8)
-material_override = SubResource("StandardMaterial3D_1258l")
-radius = 0.25
-height = 1.0
-sides = 20
-material = SubResource("StandardMaterial3D_o2qhe")
-
-[node name="BackRight" type="CSGCylinder3D" parent="CarShape/Wheels"]
-transform = Transform3D(-4.37114e-08, -0.25, 0, 1, -1.09278e-08, 0, 0, 0, 1, -0.625, -0.25, -0.8)
-material_override = SubResource("StandardMaterial3D_5i4qh")
-radius = 0.25
-height = 1.0
-sides = 20
-material = SubResource("StandardMaterial3D_o2qhe")
+[node name="car" parent="CarShape/Chassis" instance=ExtResource("3_c1wgp")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, -0.046, -0.166)

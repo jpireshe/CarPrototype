@@ -1,34 +1,39 @@
 extends CharacterBody3D
 
+class_name PlayerCar
+
+######### CAR IMPLEMENTATION
+
 # tire angle
-const MaxTireAngleRad: float = 0.7
-const MinTireAngleRad: float = -0.7
+const MaxTireAngleRad: float = 1
+const MinTireAngleRad: float = -1
 
 # turning tires
-const TurnIntensity: float = 3
-const NormalizeIntensity: float = TurnIntensity / 4
+var TurnIntensity: float = 3
+var NormalizeIntensity: float = TurnIntensity / 4
+const TireRadius: float = 1.8
 
 # acceleration, break and slow
-const Acceleration: float = 15
-const BreakIntensity: float = 50
+var Acceleration: float = 15
+const BreakIntensity: float = 20
 const SlowIntensity: float = BreakIntensity / 2
 
-const MaxSpeed: float = 100.0
-const MinSpeed: float = -100.0
+var MaxSpeed: float = 30.0
+var MinSpeed: float = -30.0
 
 # varies
 var Speed: float = 0.0
-var CarAngleRad: float = 2.0
+var CarAngleRad: float = 0.0
 var TireAngleRad: float = 0.0
 var Lights: bool = false
 var IsBreakingAction: bool = false
-var BackLightEnergyIntensity: float = 2
-var BreakLightEnergyIntensity: float = 5
+var BackLightEnergyIntensity: float = 3
+var BreakLightEnergyIntensity: float = 6
 
-@export var TireLeftFront: CSGCylinder3D
-@export var TireRightFront: CSGCylinder3D
-@export var TireLeftBack: CSGCylinder3D
-@export var TireRightBack: CSGCylinder3D
+@export var TireLeftFront: Node3D
+@export var TireRightFront: Node3D
+@export var TireLeftBack: Node3D
+@export var TireRightBack: Node3D
 
 @export var LightFrontRight: SpotLight3D
 @export var LightFrontLeft: SpotLight3D
@@ -38,6 +43,7 @@ var BreakLightEnergyIntensity: float = 5
 
 func _ready() -> void:
 	rotate(basis.y, CarAngleRad)
+	CarAngleRad = rotation.y
 
 func RotateCar(delta: float) -> void:
 	if TireAngleRad == 0: return
@@ -48,17 +54,19 @@ func RotateCar(delta: float) -> void:
 	CarAngleRad += toRotate
 	rotate(basis.y, toRotate)
 
-func TurnTiresFront(delta: float) -> void:	
+func TurnTiresFront(_delta: float) -> void:	
 	var wheels = [TireLeftFront, TireRightFront] 
 		
-	for wheel: CSGCylinder3D in wheels:
-		wheel.rotation.y = TireAngleRad
+	for wheel: Node3D in wheels:
+		wheel.rotation.y = TireAngleRad / 2
 		
 func RotateTires(delta: float) -> void:	
-	var wheels = [TireLeftFront, TireRightFront, TireLeftBack, TireRightBack]
+	var wheels = [TireLeftFront, TireRightFront, TireRightBack]
 	
-	for wheel: CSGCylinder3D in wheels:
-		wheel.rotate_object_local(Vector3(0, -1, 0), delta * (Speed / TireLeftBack.radius))
+	for wheel: Node3D in wheels:
+		wheel.rotate_object_local(Vector3(1, 0, 0), delta * (Speed / TireRadius))
+		
+	TireLeftBack.rotate_object_local(Vector3(-1, 0, 0), delta * (Speed / TireRadius))
 	
 func Accelerate(delta: float) -> void:
 	if Speed >= MaxSpeed: return
@@ -197,9 +205,9 @@ func ToggleLights():
 	TurnBackLights(true if Lights or IsBreakingAction else false)
 	BackLightEnergy(BackLightEnergyIntensity if !IsBreakingAction else BreakLightEnergyIntensity)
 	
-func TurnBackLights(visible: bool):
-	LightBackRight.visible = visible
-	LightBackLeft.visible = visible
+func TurnBackLights(IsVisible: bool):
+	LightBackRight.visible = IsVisible
+	LightBackLeft.visible = IsVisible
 	
 func BackLightEnergy(energy: float):
 	LightBackRight.light_energy = energy

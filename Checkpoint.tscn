@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=3 uid="uid://dhb4cesxtotcr"]
+
+[ext_resource type="Script" path="res://checkpoint.gd" id="1_rk8rn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x1c1j"]
+size = Vector3(10, 1, 0.15)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_esmci"]
+transparency = 1
+albedo_color = Color(0, 0.580392, 1, 0.501961)
+roughness = 0.0
+emission_enabled = true
+emission = Color(0.145552, 0.48485, 0.830608, 1)
+emission_energy_multiplier = 16.0
+backlight_enabled = true
+backlight = Color(0, 0, 1, 1)
+
+[node name="Checkpoint" type="Area3D"]
+script = ExtResource("1_rk8rn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_x1c1j")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, -3.5, 8.74228e-08, 0, -3.0598e-07, -1, 4.95, 1.25, 0)
+size = Vector3(1, 1, 0.15)
+material = SubResource("StandardMaterial3D_esmci")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, -3.5, 8.74228e-08, 0, -3.0598e-07, -1, 4.95, 1.25, 0)
+size = Vector3(1, 1, 0.15)
+material = SubResource("StandardMaterial3D_esmci")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, -3.5, 8.74228e-08, 0, -3.0598e-07, -1, -4.95, 1.25, 0)
+size = Vector3(1, 1, 0.15)
+material = SubResource("StandardMaterial3D_esmci")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, -3.5, 8.74228e-08, 0, -3.0598e-07, -1, -4.95, 1.25, 0)
+size = Vector3(1, 1, 0.15)
+material = SubResource("StandardMaterial3D_esmci")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+size = Vector3(1, 1, 0.15)
+material = SubResource("StandardMaterial3D_esmci")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+size = Vector3(1, 1, 0.15)
+material = SubResource("StandardMaterial3D_esmci")
